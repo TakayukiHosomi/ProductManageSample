@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>発注中商品確認</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #fafad2;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>発注中商品確認</h1>
+<!-- Orderテーブルがnullの場合の表示 -->
+<div th:if="${orders == null or #lists.isEmpty(orders)}">
+    <p>発注中の商品はありません</p>
+</div>
+<!-- Orderテーブルがnullでなく、商品がある場合の表示 -->
+<div th:if="${orders != null and not #lists.isEmpty(orders)}">
+    <table>
+        <thead>
+        <tr>
+            <th>商品名</th>
+            <th>発注数</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.name}"></td>
+            <td th:text="${order.orderCount}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <button onclick="deliverOrders()">納品</button>
+</div>
+<button onclick="window.location.href='/';">トップページに戻る</button>
+<script>
+    function deliverOrders() {
+        fetch('/deliverOrders', {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                alert('納品しました');
+                window.location.reload(); // ページをリロードして更新
+            } else {
+                alert('納品に失敗しました');
+            }
+        });
+    }
+</script>
+</body>
+</html>

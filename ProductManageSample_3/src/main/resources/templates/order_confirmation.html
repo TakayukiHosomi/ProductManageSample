@@ -1,0 +1,99 @@
+<!-- order_confirmation -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <title>発注確認</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #e0ffff;
+        }
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>発注確認</h1>
+<p>以下の商品を発注しますか？</p>
+<table>
+    <thead>
+    <tr>
+        <th>商品名</th>
+        <th>発注数</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entry : ${#request.getParameterMap().entrySet()}">
+        <td th:text="${entry.key}"></td>
+        <td th:text="${entry.value[0]}"></td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    // 確定ボタンのスクリプト
+    function submitFormWithParams() {
+        // フォーム要素を取得
+        const form = document.getElementById("orderForm");
+        // フォームに含まれるパラメータを取得
+        const params = /*[[${#request.getParameterMap()}]]*/ {};
+
+        // パラメータごとに処理
+        for (const [key, value] of Object.entries(params)) {
+            // パラメータ名を持つ隠しフィールドを作成し、フォームに追加
+            const inputName = document.createElement("input");
+            inputName.type = "hidden";
+            inputName.name = key;
+            inputName.value = key;
+            form.appendChild(inputName);
+
+            // パラメータ値を持つ隠しフィールドを作成し、フォームに追加
+            const inputValue = document.createElement("input");
+            inputValue.type = "hidden";
+            inputValue.name = key;
+            inputValue.value = value[0];
+            form.appendChild(inputValue);
+        }
+
+        // フォームをサブミットして発注を登録し、アラートを表示
+        form.submit();
+        alert("発注を登録しました");
+    }
+
+    // キャンセルボタンのスクリプト
+    function orderCancel() {
+        // ブラウザの履歴を一つ前に戻る
+        window.history.back();
+    }
+
+</script>
+<form id="orderForm" th:action="@{/registerOrder}" method="post">
+    <input type="hidden" th:each="entry : ${#request.getParameterMap().entrySet()}" th:name="${entry.key}" th:value="${entry.value[0]}" />
+    <button type="submit" onclick="submitFormWithParams()">確定</button>
+</form>
+
+<button onclick="orderCancel()">キャンセル</button>
+</body>
+</html>

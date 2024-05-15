@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!-- index.html-->
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ホーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #CCFFFF;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        form {
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        select {
+            padding: 5px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            padding: 5px 10px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button {
+            margin: 20px auto;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<h1>商品管理システム</h1>
+<div style="display: flex; flex-direction: column;">
+    <form th:action="@{/products/category}" method="get">
+        <select name="category">
+            <option value="1">カテゴリ1</option>
+            <option value="2">カテゴリ2</option>
+            <option value="3">カテゴリ3</option>
+        </select>
+        <input type="submit" value="カテゴリを選択">
+    </form>
+    <button onclick="location.href='/ordering'" class="order-link">発注確認画面へ</button>
+</div>
+</body>
+</html>
