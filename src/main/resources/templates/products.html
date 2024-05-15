@@ -1,0 +1,93 @@
+<!-- products.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>製品</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #99FFCC;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            max-width: 100px;
+            max-height: 100px;
+            margin: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        #order_button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<h1>製品</h1>
+<form th:action="@{/orderConfirmation}" method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>製品ID</th>
+            <th>製品名</th>
+            <th>在庫数</th>
+            <th>発注数</th>
+            <th>画像</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product, iterStat : ${products}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.stock}"></td>
+            <!-- <td><input type="number" th:name="'orderCount_' + ${product.id}" value="0"></td> -->
+            <!-- <td><input type="number" th:name="${product.name}" value="0" min="0" style="text-align: right;"></td> -->
+            <td><input type="number" th:name="${product.name}" th:value="0" min="0" style="text-align: right;"></td>
+            <td>
+                <img th:if="${T(java.nio.file.Paths).get('src/main/resources/static/images/' + product.name + '.jpg').toFile().exists()}"
+                     th:src="@{'/images/' + ${product.name} + '.jpg'}" alt="Product Image">
+                <img th:unless="${T(java.nio.file.Paths).get('src/main/resources/static/images/' + product.name + '.jpg').toFile().exists()}"
+                     th:src="@{/images/default.jpg}" alt="Default Image">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <input id="order_button" type="submit" value="発注する" onclick="resetOrderForm()"/>
+</form>
+<button onclick="window.location.href='/';">カテゴリ選択に戻る</button>
+</body>
+</html>
