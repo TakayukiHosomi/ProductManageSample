@@ -1,2 +1,0 @@
-# ProductManageSample
-POSアプリのサンプルです
